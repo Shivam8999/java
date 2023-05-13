@@ -1,0 +1,96 @@
+Q1.
+import java.util.Map.Entry;
+import java.util.*;
+public class HashtableDemoSetA4
+{
+	public static void main(String args[])
+	{
+		Scanner s=new Scanner(System.in);
+		System.out.println("Enter no of Students you want: ");
+		int n=s.nextInt();
+		Hashtable<String,Long>contact=new Hashtable<String,Long>();
+		for(int i=0;i<n;i++)
+		{
+			System.out.print("Enter Student name: ");
+			String name=s.next();
+			System.out.print("Enter student's mobile number: ");
+			long no=s.nextLong();
+			contact.put(name,no);	
+		}
+		System.out.println("Map="+contact);
+		Set s1=contact.entrySet();
+		Iterator i=s1.iterator();
+		System.out.println("Name	Contact Number");
+		while(i.hasNext())
+		{
+			Map.Entry me=(Entry)i.next();
+			System.out.println(""+me.getKey()+" "+me.getValue());
+		}
+	}
+}
+
+Q2.
+<%@page import="java.sql.*"%>
+<html>
+<head>
+<title>Online Multiple Choice Test</title>
+</head>
+<body>
+
+<%
+
+String driver = "com.mysql.jdbc.Driver";
+String url = "jdbc:mysql://localhost/test";
+String username = "root";
+String password = "";
+Class.forName(driver);
+Connection conn = DriverManager.getConnection(url, username, password);
+
+
+Statement stmt = conn.createStatement();
+ResultSet rs = stmt.executeQuery("SELECT * FROM questions ORDER BY RAND() LIMIT 1");
+rs.next();
+int questionId = rs.getInt("id");
+String questionText = rs.getString("question");
+String[] choices = new String[4];
+choices[0] = rs.getString("choice1");
+choices[1] = rs.getString("choice2");
+choices[2] = rs.getString("choice3");
+choices[3] = rs.getString("choice4");
+String answer = rs.getString("answer");
+
+
+out.println("<h1>Question " + questionId + "</h1>");
+out.println("<p>" + questionText + "</p>");
+out.println("<form method=\"post\" action=\"test.jsp\">");
+for (int i = 0; i < choices.length; i++) {
+  out.println("<input type=\"radio\" name=\"answer\" value=\"" + choices[i] + "\"> " + choices[i] + "<br>");
+}
+out.println("<input type=\"hidden\" name=\"questionId\" value=\"" + questionId + "\">");
+out.println("<input type=\"submit\" name=\"submit\" value=\"Next\">");
+out.println("</form>");
+
+
+if (request.getParameter("submit") != null) {
+  String userAnswer = request.getParameter("answer");
+  int userScore = 0;
+  if (userAnswer.equals(answer)) {
+    userScore = 1;
+  }
+  session.setAttribute("score", (Integer)session.getAttribute("score") + userScore);
+}
+
+
+if (request.getParameter("submit") != null && request.getParameter("submit").equals("Submit")) {
+  int finalScore = (Integer)session.getAttribute("score");
+  out.println("<h1>Final Score: " + finalScore + "</h1>");
+  session.invalidate();
+} else {
+  if (session.getAttribute("score") == null) {
+    session.setAttribute("score", 0);
+  }
+}
+%>
+
+</body>
+</html>

@@ -1,0 +1,78 @@
+Q1.
+import java.io.IOException;
+import java.util.*;
+class Slip2_1
+{
+    public static void main(String[] args) 
+    {
+        Scanner s=new Scanner(System.in);
+        System.out.println("Enter How many Names you want: ");
+		int n=s.nextInt();
+		HashSet hs=new HashSet();
+		for(int i=0;i<n;i++)
+		{
+			System.out.println("Enter Names: ");
+			hs.add(s.next());
+		}
+		//for (String name : names) {
+            	//	System.out.println(name);
+       		// }
+       		
+		ArrayList<String> ar=new ArrayList<>(hs);
+		System.out.println("Original contest of HashSet: "+ar);
+	}
+    
+}
+
+Q2.
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.InetAddress;
+import java.util.Date;
+import java.util.Enumeration;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class RequestInfoServlet extends HttpServlet {
+    public void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
+
+        // Get information about the client
+        String clientIpAddress = request.getRemoteAddr();
+        String userAgent = request.getHeader("User-Agent");
+
+        // Get information about the server
+        String serverName = request.getServerName();
+        int serverPort = request.getServerPort();
+        String serverOs = System.getProperty("os.name");
+        Enumeration<String> servletNames = getServletContext().getServletNames();
+
+        // Generate the response HTML
+        out.println("<html>");
+        out.println("<head>");
+        out.println("<title>Request Information</title>");
+        out.println("</head>");
+        out.println("<body>");
+        out.println("<h1>Request Information</h1>");
+        out.println("<p>Request received from: " + clientIpAddress + "</p>");
+        out.println("<p>User-Agent: " + userAgent + "</p>");
+        out.println("<p>Server name: " + serverName + "</p>");
+        out.println("<p>Server port: " + serverPort + "</p>");
+        out.println("<p>Server OS: " + serverOs + "</p>");
+        out.println("<p>Servet names: </p>");
+        out.println("<ul>");
+
+        while (servletNames.hasMoreElements()) {
+            String servletName = servletNames.nextElement();
+            out.println("<li>" + servletName + "</li>");
+        }
+
+        out.println("</ul>");
+        out.println("</body>");
+    }
+}
+
